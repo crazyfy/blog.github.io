@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="servlet," />
 
 
 
@@ -80,25 +80,16 @@
 
 
 
-<meta name="description" content="my first html	
-	
-	
-hello ,this is my first html file">
+<meta name="description" content="最近项目中有新的需求，需要在前台下载客户办理业务时生成的电子回单，出于安全的考虑，需要对下载文件做控制。因为回单文件是在后台的系统中生成的，在安卓版的微信中下载文件需要调用外部浏览器去进行下载，这样就需要文件要在本地系统中落地，这样就存在了安全风险。所以考虑，在读取后台的文件流后，直接将流返回给浏览器进行下载。所以研究了下使用servlet进行文件下载。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小胡成长记录">
-<meta property="og:url" content="http://yoursite.com/2016/04/23/study/index.html">
+<meta property="og:title" content="使用servlet下载文件">
+<meta property="og:url" content="http://yoursite.com/2016/05/07/使用servlet下载文件/index.html">
 <meta property="og:site_name" content="小胡成长记录">
-<meta property="og:description" content="my first html	
-	
-	
-hello ,this is my first html file">
-<meta property="og:updated_time" content="2016-04-23T13:11:31.884Z">
+<meta property="og:description" content="最近项目中有新的需求，需要在前台下载客户办理业务时生成的电子回单，出于安全的考虑，需要对下载文件做控制。因为回单文件是在后台的系统中生成的，在安卓版的微信中下载文件需要调用外部浏览器去进行下载，这样就需要文件要在本地系统中落地，这样就存在了安全风险。所以考虑，在读取后台的文件流后，直接将流返回给浏览器进行下载。所以研究了下使用servlet进行文件下载。">
+<meta property="og:updated_time" content="2016-05-07T10:25:47.098Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小胡成长记录">
-<meta name="twitter:description" content="my first html	
-	
-	
-hello ,this is my first html file">
+<meta name="twitter:title" content="使用servlet下载文件">
+<meta name="twitter:description" content="最近项目中有新的需求，需要在前台下载客户办理业务时生成的电子回单，出于安全的考虑，需要对下载文件做控制。因为回单文件是在后台的系统中生成的，在安卓版的微信中下载文件需要调用外部浏览器去进行下载，这样就需要文件要在本地系统中落地，这样就存在了安全风险。所以考虑，在读取后台的文件流后，直接将流返回给浏览器进行下载。所以研究了下使用servlet进行文件下载。">
 
 
 
@@ -116,7 +107,7 @@ hello ,this is my first html file">
   };
 </script>
 
-  <title>  | 小胡成长记录 </title>
+  <title> 使用servlet下载文件 | 小胡成长记录 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -236,7 +227,7 @@ hello ,this is my first html file">
             
             
               
-                
+                使用servlet下载文件
               
             
           </h1>
@@ -248,8 +239,8 @@ hello ,this is my first html file">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-23T21:11:31+08:00" content="2016-04-23">
-              2016-04-23
+            <time itemprop="dateCreated" datetime="2016-05-07T18:25:47+08:00" content="2016-05-07">
+              2016-05-07
             </time>
           </span>
 
@@ -276,15 +267,48 @@ hello ,this is my first html file">
       
 
       
-        <!DOCTYPE>
-<html>
-	<head>
-		<title>my first html</title>	
-	</head>
-	<body>
-hello ,this is my first html file
-</body>
-</html>
+        <p> 最近项目中有新的需求，需要在前台下载客户办理业务时生成的电子回单，出于安全的考虑，需要对下载文件做控制。因为回单文件是在后台的系统中生成的，在安卓版的微信中下载文件需要调用外部浏览器去进行下载，这样就需要文件要在本地系统中落地，这样就存在了安全风险。所以考虑，在读取后台的文件流后，直接将流返回给浏览器进行下载。所以研究了下使用servlet进行文件下载。<br><a id="more"></a></p>
+<hr>
+<p>具体的实现思路为引导用户在微信中调用外部浏览器去请求servlet进行下载，在调用外部浏览器时，链接地址中加入必须的信息。在servlet中获取链接中的参数，去取对应的文件。</p>
+<p>这里只将下载的代码贴出来，以作以后使用的参考。</p>
+<blockquote>
+<pre><code>public void doGet(HttpServletRequest req, HttpServletResponse resp)
+{
+  //模仿后台读取文件流
+   File f=new File(&quot;d:/&quot;+id+&quot;.pdf&quot;);
+   Long size=f.length();
+
+   InputStream fis=null;
+
+   byte[] by=new byte[1024];            
+   int i=0;
+    //使用ServletOutputStream来将获取到的文件流返回给前台
+   ServletOutputStream so=null;
+   try {
+     fis=new BufferedInputStream(new FileInputStream(f));        
+     //添加返回头，fileName为文件保存时的名称
+     resp.addHeader(&quot;Content-Disposition&quot;,&quot;attachment;filename=&quot;+filename+&quot;.pdf&quot;);
+     resp.setContentLength(size.intValue());
+  //设置返回类型
+     resp.setContentType(&quot;application/octet-stream&quot;);
+     so= resp.getOutputStream();
+
+     while((i=fis.read(by))!=-1){            
+       so.write(by, 0, i);                
+     }
+
+   } catch (Exception e) {          
+
+     e.printStackTrace();
+   }finally{
+     fis.close();
+     so.flush();
+     so.close();
+   }
+ }
+
+}
+</code></pre></blockquote>
 
       
     </div>
@@ -303,21 +327,13 @@ hello ,this is my first html file
 
     <footer class="post-footer">
       
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/04/23/firstNight/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
+        <div class="post-tags">
+          
+            <a href="/tags/servlet/" rel="tag">#servlet</a>
+          
         </div>
+      
+
       
 
       
@@ -382,13 +398,20 @@ hello ,this is my first html file
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">1</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
