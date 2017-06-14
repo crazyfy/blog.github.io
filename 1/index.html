@@ -55,7 +55,7 @@
 				</div>
 			</div>
 		</div>
-		<audio autoplay="autoplay" hidden="hidden" loop="loop">
+		<audio autoplay="autoplay" hidden="hidden" loop="loop" id="audio">
 		
 		<source src="css/music.mp3"   type="audio/mpeg" />
 		</audio>
@@ -92,6 +92,40 @@
 			adjustCodePosition();
 			$("#code").typewriter();
 		}
+	</script>
+	
+	<script>
+		var auflag=true;			
+			function auplay(){				
+				if(auflag){				
+					var audio=document.getElementById("audio");
+					audio.play();
+					auflag=false;
+				}		
+				
+			}
+			
+			function auloop(){
+				var audio=document.getElementById("audio");
+				if(audio.ended==true){					
+					auflag=true;
+					auplay();
+				}
+			}
+			
+			
+			window.onload=function(){
+				document.addEventListener("touchstart",function(e){
+					auplay();
+				},false);
+				document.addEventListener("touchmove",function(e){
+					auplay();
+				},false);
+				document.addEventListener("click",function(e){					
+					auplay();
+				},false);
+			}
+
 	</script>
 </body>
 </html>
