@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Our Love Story</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+		@font-face {
+			font-family: digit;
+			src: url('digital-7_mono.ttf') format("truetype");
+		}
+	
+	</style>
+	<link href="css/default.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/garden.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    
+</head>
+
+<body>
+	<div id="mainDiv">
+		<div id="content">
+			<div id="code">
+				<span class="comments">我的爱人</span><br />
+				<span class="space"/><span class="comments">我会牵着你的手，走到我们满头白发那一天</span><br />
+				<span class="space"/><span class="comments">我会守护你生命里的精彩，并陪伴你一路精彩下去</span><br />
+				<span class="space"/><span class="comments">我会陪着你走过人生中的风风雨雨</span><br />				
+				<span class="space"/><span class="comments">你的幸福快乐，是我一生的追求</span><br />
+				<span class="space"/><span class="comments">我希望可以带你去所有你想去的地方</span><br />
+				<span class="space"/><span class="comments">我希望去的每个地方都会有你</span><br />
+				<span class="space"/><span class="comments">我希望陪你做任何你想做的事</span><br />
+				<span class="space"/><span class="comments">我希望可以陪你闹看你笑</span><br />
+				<span class="space"/><span class="comments">我希望可以历经你生命中所有的点点滴滴</span><br />
+				<span class="space"/><span class="comments">我希望陪你慢慢变老</span><br />
+				<span class="space"/><span class="comments">我希望等我们老了走不动了</span><br />
+				<span class="space"/><span class="comments">还能满载着一生的幸福快乐</span><br />
+				<span class="space"/><span class="comments">我会为我们的未来撑起一片天空</span><br />
+				<span class="space"/><span class="comments">我愿意为我们的将来担负起一生的责任</span><br />
+				<span class="space"/><span class="comments">我愿意为你去做每一件能让你开心快乐的事</span><br />
+				<span class="space"/><span class="comments">我愿意爱你直到老去</span><br />
+			</div>
+			<div id="loveHeart">
+				<canvas id="garden"></canvas>
+				<div id="words">
+					<div id="messages">
+						亲爱的康康
+						<div id="elapseClock"></div>
+					</div>
+					<div id="loveu">
+						Love u forever and ever.<br/>
+						<div class="signature">- 胡</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<audio autoplay="autoplay"  loop="loop" id="audio">
+		
+		<source src="css/music.mp3"   type="audio/mpeg" />
+		</audio>
+	</div>
+	
+	<script type="text/javascript">
+		var offsetX = $("#loveHeart").width() / 2;
+		var offsetY = $("#loveHeart").height() / 2 - 55;
+		var together = new Date();
+		together.setFullYear(2017, 6, 09);
+		together.setHours(17);
+		together.setMinutes(27);
+		together.setSeconds(23);
+		together.setMilliseconds(0);
+		
+		if (!document.createElement('canvas').getContext) {
+			var msg = document.createElement("div");
+			msg.id = "errorMsg";
+			msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+"; 
+			document.body.appendChild(msg);
+			$("#code").css("display", "none")
+			$("#copyright").css("position", "absolute");
+			$("#copyright").css("bottom", "10px");
+		    document.execCommand("stop");
+		} else {
+			setTimeout(function () {
+				startHeartAnimation();
+			}, 5000);
+
+			timeElapse(together);
+			setInterval(function () {
+				timeElapse(together);
+			}, 500);
+
+			adjustCodePosition();
+			$("#code").typewriter();
+		}
+
+		var auflag=true;			
+			function auplay(){				
+				if(auflag){				
+					var audio=document.getElementById("audio");
+					audio.play();
+					auflag=false;
+				}		
+				
+			}
+			
+			function auloop(){
+				var audio=document.getElementById("audio");
+				if(audio.ended==true){					
+					auflag=true;
+					auplay();
+				}
+			}
+			
+			
+			window.onload=function(){
+				document.addEventListener("touchstart",function(e){
+					auplay();
+				},false);
+				document.addEventListener("touchmove",function(e){
+					auplay();
+				},false);
+				document.addEventListener("click",function(e){					
+					auplay();
+				},false);
+			}
+	</script>
+
+</body>
+
+</html>
